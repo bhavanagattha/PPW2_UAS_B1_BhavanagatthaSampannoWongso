@@ -20,23 +20,19 @@ class LoginController extends Controller
     }
 
     public function authenticate(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if(Auth::attempt($credentials))
-        {
-            $request->session()->regenerate();
-            return redirect()->route('dashboard')->withSuccess('logged in');
-        }
-
-        return back()->withErrors([
-            'email' => 'email atau password salah',
-        ])->onlyInput('email');
-
+    if (Auth::attempt($request->only('email', 'password'))) {
+        return redirect()->route('dashboard')->with('success', 'Login successful!');
     }
+
+    return redirect()->back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+}
+
 
     public function logout(Request $request)
     {
