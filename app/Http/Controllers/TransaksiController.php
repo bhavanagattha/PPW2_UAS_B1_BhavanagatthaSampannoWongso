@@ -40,6 +40,7 @@ class TransaksiController extends Controller
 
         // Gunakan transaction
         try {
+            $transaksi = new Transaksi();
             $transaksi->tanggal_pembelian = $request->input('tanggal_pembelian');
             $transaksi->total_harga = 0;
             $transaksi->bayar = $request->input('bayar');
