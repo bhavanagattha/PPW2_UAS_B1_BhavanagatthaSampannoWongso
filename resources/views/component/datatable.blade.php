@@ -1,12 +1,14 @@
-<link rel="stylesheet" href="{{ asset('dataTables.bootstrap5.') }}" />
+<!-- Tambahkan CSS DataTable -->
+<link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}" />
 
+<!-- Tambahkan library DataTable -->
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('js/dataTables.bootstrap5.min.js') }}"></script>
 
-
-<script src="{{ asset('dataTables.') }}"></script>
-<script src="{{ asset('dataTables.bootstrap5.') }}"></script>
-
+<!-- Inisialisasi DataTable -->
 <script>
     $(document).ready(function() {
-        new DataTable('.datatable');
+        $('.datatable').DataTable(); // Pastikan kelas 'datatable' ada di tabel HTML Anda
     });
 </script>
