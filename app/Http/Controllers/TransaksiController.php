@@ -47,18 +47,34 @@ class TransaksiController extends Controller
             $transaksi->save();
 
             $total_harga = 0;
-            for (){
-                $transaksidetail->id_transaksi = $transaksi->id;
-                $transaksidetail->nama_produk = $request->input('nama_produk'.$i);
-                $transaksidetail->harga_satuan = $request->input('harga_satuan'.$i);
-                $transaksidetail->jumlah = $request->input('jumlah'.$i);
-                $transaksidetail->subtotal = $request->input('harga_satuan'.$i)*$request->input('jumlah'.$i);
-                $total_harga += $transaksidetail->subtotal;
-            }
-            $transaksi->total_harga = $total_harga;
-            $transaksi->kembalian =
+            for ($i = 1; $i <= 3; $i++){
+                $nama_produk = $request->input("nama_produk$i");
+            $harga_satuan = $request->input("harga_satuan$i");
+            $jumlah = $request->input("jumlah$i");
 
-            return redirect('transaksidetail/'.$transaksi->id)->with('pesan', 'Berhasil menambahkan data');
+            if ($nama_produk && $harga_satuan && $jumlah) {
+                $subtotal = $harga_satuan * $jumlah;
+
+                $transaksiDetail = new TransaksiDetail();
+                $transaksiDetail->id_transaksi = $transaksi->id;
+                $transaksiDetail->nama_produk = $nama_produk;
+                $transaksiDetail->harga_satuan = $harga_satuan;
+                $transaksiDetail->jumlah = $jumlah;
+                $transaksiDetail->subtotal = $subtotal;
+                $transaksiDetail->save();
+
+                $total_harga += $subtotal;
+            }
+        }
+
+        $transaksi->total_harga = $total_harga;
+        $transaksi->kembalian = $transaksi->bayar - $total_harga;
+        $transaksi->save();
+
+        DB::commit();
+        return redirect()->route('transaksidetail.index', $transaksi->id)->with('pesan', 'Berhasil menambahkan data');
+
+
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->withErrors(['Transaction' => 'Gagal menambahkan data'])->withInput();
