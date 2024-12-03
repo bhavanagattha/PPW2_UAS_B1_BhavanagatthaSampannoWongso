@@ -37,8 +37,8 @@ class TransaksiDetailController extends Controller
             'harga_satuan' => 'required|numeric',
             'jumlah' => 'required|numeric',
         ]);
-
-        DB:beginTransaction();
+    
+        DB::beginTransaction();
 
         // Gunakan transaction
         try {
