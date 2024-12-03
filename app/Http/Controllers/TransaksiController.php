@@ -102,10 +102,16 @@ class TransaksiController extends Controller
         return redirect()->route('transaksi.index') -> with('pesan', 'Berhasil mengubah data');
     }
 
-    public function destroy()
+    public function destroy($id)
     {
         $transaksi = Transaksi::findOrFail($id);
 
-        return redirect('/transaksi');
-    }
+    // Hapus detail transaksi terlebih dahulu
+    TransaksiDetail::where('id_transaksi', $transaksi->id)->delete();
+
+    // Hapus transaksi
+    $transaksi->delete();
+
+    return redirect()->route('transaksi.index')->with('pesan', 'Berhasil menghapus data');
+}
 }
