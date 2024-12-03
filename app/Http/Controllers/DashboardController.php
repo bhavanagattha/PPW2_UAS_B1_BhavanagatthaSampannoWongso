@@ -9,14 +9,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $transaksi_count = Transaksi::count(); 
-        $total_items_sold = TransaksiDetail::sum('jumlah'); 
-        $total_revenue = TransaksiDetail::sum('harga_total'); 
+        $transaksi_count = Transaksi::count();
+        $jumlah_item_terjual = TransaksiDetail::sum('jumlah');
+        $omzet = TransaksiDetail::sum('subtotal');
 
-        return view('dashboard', [
-            'transaksi_count' => $transaksi_count,
-            'total_items_sold' => $total_items_sold,
-            'total_revenue' => $total_revenue,
-        ]);
+        return view('dashboard', 
+        compact('transaksi_count', 'jumlah_item_terjual', 'omzet'));
     }
 }
